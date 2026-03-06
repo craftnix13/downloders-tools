@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | SaveIt.Pro</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px; background: var(--bg2); border-right: 1px solid var(--border);
+      padding: 24px 16px; display: flex; flex-direction: column; gap: 8px;
+      position: fixed; top: 0; left: 0; height: 100vh; overflow-y: auto; z-index: 50;
+      transition: transform 0.3s;
+    }
+    .sidebar-logo { padding: 8px 8px 20px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+    .sidebar-logo .logo { font-size: 1.1rem; }
+    .sidebar-section { font-size: 0.68rem; font-weight: 700; color: var(--text-dim); letter-spacing: 0.12em; text-transform: uppercase; padding: 12px 10px 4px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+      border-radius: 10px; cursor: pointer; transition: var(--transition);
+      font-size: 0.875rem; font-weight: 500; color: var(--text-muted); border: none; background: none;
+      width: 100%; text-align: left;
+    }
+    .nav-item:hover { background: var(--surface); color: var(--text); }
+    .nav-item.active { background: var(--accent-glow); color: var(--accent); }
+    .nav-item .icon { width: 18px; text-align: center; font-size: 1rem; }
+    .sidebar-footer { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border); }
+
+    /* Main */
+    .main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .topbar {
+      background: var(--bg2); border-bottom: 1px solid var(--border);
+      padding: 0 28px; height: 60px; display: flex; align-items: center;
+      justify-content: space-between; position: sticky; top: 0; z-index: 10;
+    }
+    .topbar h1 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; }
+    .topbar-actions { display: flex; align-items: center; gap: 12px; }
+    .user-chip {
+      display: flex; align-items: center; gap: 8px; padding: 6px 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 100px; font-size: 0.8rem;
+    }
+    .user-avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: #000; font-weight: 700; }
+
+    /* Content */
+    .content { padding: 32px 28px; flex: 1; }
+
+    /* Tab panels */
+    .panel { display: none; }
+    .panel.active { display: block; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Stats */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 20px 24px;
+    }
+    .stat-card .label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .stat-card .value { font-family: var(--font-display); font-size: 2rem; font-weight: 800; letter-spacing: -0.04em; }
+    .stat-card .change { font-size: 0.78rem; color: var(--success); margin-top: 4px; }
+
+    /* Table */
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+    .table-head { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .table-head h3 { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 12px 16px; text-align: left; font-size: 0.72rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--border); }
+    td { padding: 14px 16px; font-size: 0.875rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--bg3); }
+    .table-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .td-flex { display: flex; align-items: center; gap: 12px; }
+
+    /* Action buttons */
+    .action-btns { display: flex; gap: 8px; }
+    .btn-edit { padding: 6px 14px; border-radius: 8px; background: var(--accent-glow); color: var(--accent); font-size: 0.78rem; font-weight: 600; transition: var(--transition); border: 1px solid transparent; }
+    .btn-edit:hover { border-color: var(--accent); }
+    .btn-del { padding: 6px 14px; border-radius: 8px; background: rgba(255,71,87,0.08); color: var(--danger); font-size: 0.78rem; font-weight: 600; transition: var(--transition); border: 1px solid transparent; }
+    .btn-del:hover { border-color: var(--danger); }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200;
+      display: none; align-items: center; justify-content: center; padding: 24px;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      width: 100%; max-width: 580px; max-height: 90vh; overflow-y: auto;
+      animation: modalIn 0.25s ease; box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    }
+    @keyframes modalIn { from { transform: scale(0.95) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+    .modal-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .modal-head h3 { font-family: var(--font-display); font-weight: 700; }
+    .modal-close { width: 32px; height: 32px; border-radius: 8px; background: var(--surface); display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: var(--transition); }
+    .modal-close:hover { background: var(--border); }
+    .modal-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; }
+
+    /* Form */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .form-group input, .form-group textarea, .form-group select {
+      padding: 10px 14px; border-radius: var(--radius); background: var(--bg);
+      border: 1px solid var(--border); color: var(--text); font-size: 0.875rem;
+      outline: none; transition: var(--transition); font-family: var(--font-body);
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .form-group textarea { min-height: 120px; resize: vertical; }
+    .img-preview { width: 100%; height: 160px; border-radius: var(--radius); object-fit: cover; border: 1px solid var(--border); display: none; }
+
+    /* Empty state */
+    .empty { text-align: center; padding: 48px; color: var(--text-muted); }
+    .empty .icon { font-size: 3rem; margin-bottom: 12px; }
+    .empty p { font-size: 0.9rem; }
+
+    /* Badge */
+    .badge { padding: 3px 10px; border-radius: 6px; font-size: 0.72rem; font-weight: 600; }
+    .badge-active { background: rgba(0,230,118,0.1); color: var(--success); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-240px); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <a href="../index.html" class="logo" style="display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:800">
+      <div class="logo-icon" style="width:28px;height:28px;font-size:0.8rem">⬇️</div>
+      SaveIt<span style="color:var(--accent)">.Pro</span>
+    </a>
+  </div>
+
+  <div class="sidebar-section">Overview</div>
+  <button class="nav-item active" data-panel="overview">
+    <span class="icon">📊</span> Dashboard
+  </button>
+
+  <div class="sidebar-section">Content</div>
+  <button class="nav-item" data-panel="tools">
+    <span class="icon">🔧</span> Manage Tools
+  </button>
+  <button class="nav-item" data-panel="blogs">
+    <span class="icon">📝</span> Manage Blog
+  </button>
+
+  <div class="sidebar-section">Settings</div>
+  <button class="nav-item" data-panel="seo">
+    <span class="icon">🔍</span> SEO Settings
+  </button>
+
+  <div class="sidebar-footer">
+    <button class="nav-item" id="logoutBtn">
+      <span class="icon">🚪</span> Sign Out
+    </button>
+    <a href="../index.html" class="nav-item" style="text-decoration:none">
+      <span class="icon">🌐</span> View Site
+    </a>
+  </div>
+</aside>
+
+<!-- Main -->
+<div class="main">
+  <header class="topbar">
+    <h1 id="panelTitle">Dashboard</h1>
+    <div class="topbar-actions">
+      <button class="theme-toggle" id="themeToggle" style="width:36px;height:36px;border-radius:8px;background:var(--surface);border:1px solid var(--border)">☀️</button>
+      <div class="user-chip">
+        <div class="user-avatar" id="userAvatar">A</div>
+        <span id="userEmail" style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Admin</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ── Overview Panel ── -->
+    <div class="panel active" id="panel-overview">
+      <div class="stats-row">
+        <div class="stat-card"><div class="label">Total Tools</div><div class="value" id="statTools">—</div></div>
+        <div class="stat-card"><div class="label">Blog Posts</div><div class="value" id="statBlogs">—</div></div>
+        <div class="stat-card"><div class="label">Platforms</div><div class="value">9</div></div>
+        <div class="stat-card"><div class="label">Status</div><div class="value" style="font-size:1.2rem">🟢 Live</div></div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-head">
+          <h3>Recent Activity</h3>
+        </div>
+        <table>
+          <thead><tr><th>Event</th><th>Time</th></tr></thead>
+          <tbody id="activityLog">
+            <tr><td>Admin panel accessed</td><td id="loginTime"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── Tools Panel ── -->
+    <div class="panel" id="panel-tools">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <div><h2 style="font-family:var(--font-display);font-weight:800;font-size:1.3rem">Manage Tools</h2></div>
+        <button class="btn btn-primary" id="addToolBtn">+ Add Tool</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Tool</th><th>URL</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="toolsTable"><tr><td colspan="4"><div class="empty"><div class="icon">🔧</div><p>Loading tools…</p></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── Blog Panel ── -->
+    <div class="panel" id="panel-blogs">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <div><h2 style="font-family:var(--font-display);font-weight:800;font-size:1.3rem">Manage Blog</h2></div>
+        <button class="btn btn-primary" id="addBlogBtn">+ Add Post</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Title</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="blogsTable"><tr><td colspan="3"><div class="empty"><div class="icon">📝</div><p>Loading posts…</p></div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── SEO Panel ── -->
+    <div class="panel" id="panel-seo">
+      <h2 style="font-family:var(--font-display);font-weight:800;font-size:1.3rem;margin-bottom:20px">SEO Settings</h2>
+      <div class="table-wrap" style="padding:24px">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div class="form-group"><label>Site Title</label><input type="text" id="seoTitle" placeholder="SaveIt.Pro – Free Video Downloader"></div>
+          <div class="form-group"><label>Meta Description</label><textarea id="seoDesc" placeholder="Download videos from Instagram, TikTok, YouTube and more for free…"></textarea></div>
+          <div class="form-group"><label>Keywords</label><input type="text" id="seoKeywords" placeholder="video downloader, instagram downloader, tiktok downloader…"></div>
+          <div class="form-group"><label>Google Analytics ID</label><input type="text" id="seoGA" placeholder="G-XXXXXXXXXX"></div>
+          <div class="form-group"><label>Google AdSense Publisher ID</label><input type="text" id="seoAdsense" placeholder="ca-pub-XXXXXXXXXXXXXXXX"></div>
+          <button class="btn btn-primary" id="saveSeoBtn">Save SEO Settings</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Tool Modal ── -->
+<div class="modal-overlay" id="toolModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="toolModalTitle">Add Tool</h3>
+      <button class="modal-close" data-close="toolModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="toolId">
+      <div class="form-row">
+        <div class="form-group"><label>Tool Name *</label><input type="text" id="toolTitle" placeholder="Instagram Reels Downloader"></div>
+        <div class="form-group"><label>Emoji Icon *</label><input type="text" id="toolIcon" placeholder="📸" maxlength="4"></div>
+      </div>
+      <div class="form-group"><label>Description</label><input type="text" id="toolDesc" placeholder="Download Instagram Reels without watermark"></div>
+      <div class="form-group"><label>Tool Page URL</label><input type="text" id="toolUrl" placeholder="tools/instagram-reels.html"></div>
+      <div class="form-group">
+        <label>Tool Icon Image (optional)</label>
+        <input type="file" id="toolIconFile" accept="image/*">
+        <img id="toolIconPreview" class="img-preview" alt="Preview">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-close="toolModal">Cancel</button>
+      <button class="btn btn-primary" id="saveToolBtn">Save Tool</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Blog Modal ── -->
+<div class="modal-overlay" id="blogModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="blogModalTitle">Add Blog Post</h3>
+      <button class="modal-close" data-close="blogModal">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="blogId">
+      <div class="form-group"><label>Title *</label><input type="text" id="blogTitle" placeholder="How to Download Instagram Reels in 2024"></div>
+      <div class="form-group"><label>Meta Description</label><input type="text" id="blogMetaDesc" placeholder="A short description for SEO (150-160 chars)"></div>
+      <div class="form-group"><label>Content *</label><textarea id="blogContent" placeholder="Write your blog post content here… HTML is supported." style="min-height:200px"></textarea></div>
+      <div class="form-group">
+        <label>Featured Image</label>
+        <input type="file" id="blogImageFile" accept="image/*">
+        <img id="blogImagePreview" class="img-preview" alt="Preview">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-close="blogModal">Cancel</button>
+      <button class="btn btn-primary" id="saveBlogBtn">Publish Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Confirm Delete Modal ── -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-head"><h3>Confirm Delete</h3><button class="modal-close" data-close="confirmModal">✕</button></div>
+    <div class="modal-body"><p style="color:var(--text-muted)">Are you sure you want to delete this item? This action cannot be undone.</p></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-close="confirmModal">Cancel</button>
+      <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container"></div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>
