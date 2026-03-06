@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook Video Downloader | SaveIt.Pro</title>
+  <meta name="description" content="Download Facebook videos for free. No watermark, no signup. HD quality.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="tool-style.css">
+</head>
+<body>
+<nav class="navbar"><div class="container navbar-inner">
+  <a href="../index.html" class="logo"><div class="logo-icon">⬇️</div>Save<span>It</span>.Pro</a>
+  <div class="nav-links"><a href="../index.html">Home</a><a href="../pages/blog.html">Blog</a></div>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</div></nav>
+<div class="mobile-nav" id="mobileNav"><button class="mobile-close" id="mobileClose">✕</button><a href="../index.html">🏠 Home</a></div>
+
+<div class="tool-hero"><div class="container">
+  <div class="tool-hero-inner">
+    <div class="tool-hero-icon icon-facebook">👥</div>
+    <div><h1>Facebook Video Downloader</h1><p>Download Facebook content for free. No watermark, no login required.</p></div>
+  </div>
+  <div class="input-box">
+    <input type="url" id="urlInput" placeholder="Paste Facebook link here…" autocomplete="off">
+    <button class="btn-download" id="downloadBtn">⬇ Download</button>
+  </div>
+  <div class="error-box" id="errorBox">⚠️ <span id="errorMsg">Invalid URL</span></div>
+  <div class="loader" id="loader"><div class="spinner"></div><p class="loader-text">Processing…</p></div>
+  <div class="result-box" id="resultBox">
+    <div class="result-meta">
+      <img id="resultThumb" class="result-thumb" src="" alt="thumbnail" style="display:none">
+      <div class="result-info"><h3 id="resultTitle">Video ready</h3><p id="resultMeta"></p></div>
+    </div>
+    <div class="video-preview" id="videoPreview"><video controls playsinline></video></div>
+    <div class="download-options" id="downloadOptions"></div>
+  </div>
+</div></div>
+
+<div class="container"><div class="ad-slot">Advertisement</div></div>
+
+<section class="section"><div class="container">
+  <div class="section-header"><span class="tag">Guide</span><h2>How to Download Facebook Content</h2></div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div><h4>Open Facebook</h4><p>Find the content you want to download on Facebook.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div><h4>Copy the link</h4><p>Copy the URL from your browser address bar or use the share menu.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div><h4>Paste & Download</h4><p>Paste the link above and hit Download. Your file will be ready instantly!</p></div></div>
+  </div>
+</div></section>
+
+<section class="section" style="background:var(--bg2)"><div class="container">
+  <div class="section-header"><span class="tag">FAQ</span><h2>Common Questions</h2></div>
+  <div class="faq">
+    <div class="faq-item"><button class="faq-q">Is this tool free? <span class="chevron">▼</span></button><div class="faq-a"><p>Yes, completely free with no hidden fees or subscriptions.</p></div></div>
+    <div class="faq-item"><button class="faq-q">What quality will I get? <span class="chevron">▼</span></button><div class="faq-a"><p>We provide the highest available quality from the original source.</p></div></div>
+    <div class="faq-item"><button class="faq-q">Do I need to create an account? <span class="chevron">▼</span></button><div class="faq-a"><p>No account needed. Just paste the link and download.</p></div></div>
+  </div>
+</div></section>
+
+<footer><div class="container"><div class="footer-bottom"><p>© 2024 SaveIt.Pro · For personal use only.</p><div class="footer-bottom-links"><a href="../pages/privacy-policy.html">Privacy</a><a href="../index.html">Home</a></div></div></div></footer>
+<div class="toast-container"></div>
+<script>window.TOOL_CONFIG = { platformName: 'Facebook', domains: ['facebook.com', 'fb.watch'] };</script>
+<script src="tool.js"></script>
+<script>
+document.getElementById('hamburger')?.addEventListener('click', () => document.getElementById('mobileNav')?.classList.add('open'));
+document.getElementById('mobileClose')?.addEventListener('click', () => document.getElementById('mobileNav')?.classList.remove('open'));
+</script>
+</body>
+</html>

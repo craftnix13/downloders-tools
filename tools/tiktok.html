@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok Video Downloader – No Watermark | SaveIt.Pro</title>
+  <meta name="description" content="Download TikTok videos without watermark for free. Remove TikTok logo and save HD videos instantly.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="tool-style.css">
+</head>
+<body>
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="../index.html" class="logo"><div class="logo-icon">⬇️</div>Save<span>It</span>.Pro</a>
+    <div class="nav-links"><a href="../index.html">Home</a><a href="../pages/blog.html">Blog</a></div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle">☀️</button>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav"><button class="mobile-close" id="mobileClose">✕</button><a href="../index.html">🏠 Home</a><a href="../pages/blog.html">📝 Blog</a></div>
+
+<div class="tool-hero">
+  <div class="container">
+    <div class="tool-hero-inner">
+      <div class="tool-hero-icon icon-tiktok">🎵</div>
+      <div><h1>TikTok Video Downloader</h1><p>Save TikTok videos without watermark in HD quality. 100% free.</p></div>
+    </div>
+    <div class="input-box">
+      <input type="url" id="urlInput" placeholder="Paste TikTok video link… https://www.tiktok.com/@user/video/…" autocomplete="off">
+      <button class="btn-download" id="downloadBtn">⬇ Download</button>
+    </div>
+    <div class="error-box" id="errorBox">⚠️ <span id="errorMsg">Invalid URL</span></div>
+    <div class="loader" id="loader"><div class="spinner"></div><p class="loader-text">Processing TikTok video…</p></div>
+    <div class="result-box" id="resultBox">
+      <div class="result-meta">
+        <img id="resultThumb" class="result-thumb" src="" alt="thumbnail" style="display:none">
+        <div class="result-info"><h3 id="resultTitle">TikTok Video</h3><p id="resultMeta"></p></div>
+      </div>
+      <div class="video-preview" id="videoPreview"><video controls playsinline></video></div>
+      <div class="download-options" id="downloadOptions"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container"><div class="ad-slot">Advertisement</div></div>
+
+<section class="section"><div class="container">
+  <div class="section-header"><span class="tag">Guide</span><h2>How to Download TikTok Videos</h2></div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div><h4>Open TikTok</h4><p>Find the video you want on TikTok app or website.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div><h4>Copy Video Link</h4><p>Tap Share → Copy Link on the TikTok video.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div><h4>Paste & Download</h4><p>Paste the link above and click Download. No watermark!</p></div></div>
+  </div>
+</div></section>
+
+<section class="section" style="background:var(--bg2)"><div class="container">
+  <div class="section-header"><span class="tag">FAQ</span><h2>Questions</h2></div>
+  <div class="faq">
+    <div class="faq-item"><button class="faq-q">How to remove TikTok watermark? <span class="chevron">▼</span></button><div class="faq-a"><p>Our tool downloads the original video source before the watermark is applied, giving you a clean video file.</p></div></div>
+    <div class="faq-item"><button class="faq-q">Can I download TikTok videos on iPhone? <span class="chevron">▼</span></button><div class="faq-a"><p>Yes! Our website works on all iPhone browsers. After downloading, you may need to use a file manager app to save to your Camera Roll.</p></div></div>
+    <div class="faq-item"><button class="faq-q">Is the download quality HD? <span class="chevron">▼</span></button><div class="faq-a"><p>Yes. We provide the highest quality available from TikTok's servers, typically 1080p.</p></div></div>
+  </div>
+</div></section>
+
+<footer><div class="container"><div class="footer-bottom"><p>© 2024 SaveIt.Pro</p><div class="footer-bottom-links"><a href="../pages/privacy-policy.html">Privacy</a><a href="../index.html">Home</a></div></div></div></footer>
+<div class="toast-container"></div>
+<script>window.TOOL_CONFIG = { platformName: 'TikTok', domains: ['tiktok.com', 'vm.tiktok.com'], apiHost: 'tiktok-video-no-watermark2.p.rapidapi.com' };</script>
+<script src="tool.js"></script>
+<script>
+document.getElementById('hamburger')?.addEventListener('click', () => document.getElementById('mobileNav')?.classList.add('open'));
+document.getElementById('mobileClose')?.addEventListener('click', () => document.getElementById('mobileNav')?.classList.remove('open'));
+</script>
+</body>
+</html>
