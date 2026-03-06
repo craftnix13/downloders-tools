@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog – Tips & Guides | SaveIt.Pro</title>
+  <meta name="description" content="Read our latest guides and tips on downloading videos from Instagram, TikTok, YouTube and more.">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<nav class="navbar"><div class="container navbar-inner">
+  <a href="../index.html" class="logo"><div class="logo-icon">⬇️</div>Save<span>It</span>.Pro</a>
+  <div class="nav-links"><a href="../index.html">Home</a><a href="blog.html">Blog</a><a href="how-to-use.html">How to Use</a><a href="contact.html">Contact</a></div>
+  <div class="nav-actions">
+    <button class="theme-toggle" id="themeToggle">☀️</button>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</div></nav>
+<div class="mobile-nav" id="mobileNav"><button class="mobile-close" id="mobileClose">✕</button><a href="../index.html">🏠 Home</a><a href="blog.html">📝 Blog</a><a href="how-to-use.html">❓ How to Use</a><a href="contact.html">📬 Contact</a></div>
+
+<section style="padding: 56px 0 32px; background: var(--bg2); border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <span class="tag">Blog</span>
+    <h1 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-0.04em;margin:12px 0 8px">Tips & Guides</h1>
+    <p style="color:var(--text-muted)">How-to guides, tips and news about video downloading.</p>
+  </div>
+</section>
+
+<div class="container"><div class="ad-slot">Advertisement</div></div>
+
+<section class="section"><div class="container">
+  <div class="blog-grid" id="blogGrid">
+    <!-- Skeleton -->
+    <div class="blog-card"><div class="skeleton" style="height:200px"></div><div class="blog-card-body"><div class="skeleton" style="height:14px;width:80px;margin-bottom:10px"></div><div class="skeleton" style="height:20px;margin-bottom:8px"></div><div class="skeleton" style="height:50px"></div></div></div>
+    <div class="blog-card"><div class="skeleton" style="height:200px"></div><div class="blog-card-body"><div class="skeleton" style="height:14px;width:80px;margin-bottom:10px"></div><div class="skeleton" style="height:20px;margin-bottom:8px"></div><div class="skeleton" style="height:50px"></div></div></div>
+    <div class="blog-card"><div class="skeleton" style="height:200px"></div><div class="blog-card-body"><div class="skeleton" style="height:14px;width:80px;margin-bottom:10px"></div><div class="skeleton" style="height:20px;margin-bottom:8px"></div><div class="skeleton" style="height:50px"></div></div></div>
+  </div>
+</div></section>
+
+<footer><div class="container"><div class="footer-bottom"><p>© 2024 SaveIt.Pro</p><div class="footer-bottom-links"><a href="privacy-policy.html">Privacy</a><a href="contact.html">Contact</a><a href="../index.html">Home</a></div></div></div></footer>
+<div class="toast-container"></div>
+
+<script type="module">
+const t = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', t);
+document.getElementById('themeToggle').textContent = t === 'dark' ? '☀️' : '🌙';
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  document.getElementById('themeToggle').textContent = next === 'dark' ? '☀️' : '🌙';
+});
+document.getElementById('hamburger')?.addEventListener('click', () => document.getElementById('mobileNav')?.classList.add('open'));
+document.getElementById('mobileClose')?.addEventListener('click', () => document.getElementById('mobileNav')?.classList.remove('open'));
+
+// Load all blogs
+async function loadBlogs() {
+  const grid = document.getElementById('blogGrid');
+  try {
+    const { db } = await import('../firebase/firebase-config.js');
+    const { collection, getDocs, orderBy, query } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+    const q = query(collection(db, 'blogs'), orderBy('date', 'desc'));
+    const snap = await getDocs(q);
+    const blogs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    if (blogs.length === 0) {
+      grid.innerHTML = '<p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:48px 0">No blog posts yet. Check back soon!</p>';
+      return;
+    }
+    grid.innerHTML = blogs.map(b => `
+      <a href="blog-post.html?id=${b.id}" class="blog-card">
+        ${b.image ? `<img src="${b.image}" alt="${b.title}" loading="lazy">` : `<div class="blog-card-img-placeholder">📝</div>`}
+        <div class="blog-card-body">
+          <div class="date">${b.date ? new Date(b.date.seconds*1000).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}) : ''}</div>
+          <h3>${b.title}</h3>
+          <p>${b.meta_description || ''}</p>
+        </div>
+      </a>
+    `).join('');
+  } catch (e) {
+    grid.innerHTML = '<p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:48px 0">Could not load posts.</p>';
+  }
+}
+loadBlogs();
+</script>
+</body>
+</html>

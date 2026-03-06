@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy | SaveIt.Pro</title>
+  <meta name="description" content="SaveIt.Pro Privacy Policy – How we handle your data and protect your privacy.">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .policy-content { max-width: 760px; padding: 56px 0; }
+    .policy-content h1 { font-family:var(--font-display);font-size:2.5rem;font-weight:800;letter-spacing:-0.04em;margin-bottom:8px; }
+    .policy-content .updated { color:var(--text-muted);font-size:0.85rem;margin-bottom:40px; }
+    .policy-content h2 { font-family:var(--font-display);font-weight:700;font-size:1.2rem;margin:32px 0 12px; }
+    .policy-content p, .policy-content li { color:var(--text-muted);line-height:1.8;font-size:0.95rem;margin-bottom:12px; }
+    .policy-content ul { margin-left:20px; }
+  </style>
+</head>
+<body>
+<nav class="navbar"><div class="container navbar-inner">
+  <a href="../index.html" class="logo"><div class="logo-icon">⬇️</div>Save<span>It</span>.Pro</a>
+  <div class="nav-links"><a href="../index.html">Home</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a></div>
+  <div class="nav-actions"><button class="theme-toggle" id="themeToggle">☀️</button></div>
+</div></nav>
+
+<div class="container">
+  <div class="policy-content">
+    <span class="tag">Legal</span>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: January 1, 2024</p>
+
+    <h2>1. Introduction</h2>
+    <p>Welcome to SaveIt.Pro ("we", "our", "us"). We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains what information we collect, how we use it, and what rights you have.</p>
+
+    <h2>2. Information We Collect</h2>
+    <p>SaveIt.Pro is designed to minimize data collection. We do not require you to create an account or log in to use our download tools. Specifically:</p>
+    <ul>
+      <li><strong>URLs you submit:</strong> We process the URLs you paste into our tools solely to fetch and provide the download link. We do not permanently store submitted URLs.</li>
+      <li><strong>Usage data:</strong> We may collect anonymous, aggregated usage statistics (page views, tool usage counts) to improve our service.</li>
+      <li><strong>Cookies:</strong> We use a single cookie to remember your dark/light mode preference. No tracking cookies are used.</li>
+    </ul>
+
+    <h2>3. How We Use Your Information</h2>
+    <p>The minimal data we collect is used solely to:</p>
+    <ul>
+      <li>Process your video download requests</li>
+      <li>Improve and maintain the website</li>
+      <li>Detect and prevent abuse</li>
+    </ul>
+
+    <h2>4. Third-Party Services</h2>
+    <p>Our service may use third-party APIs (such as RapidAPI) to process download requests. These services have their own privacy policies. We may display Google AdSense ads, which use cookies to show relevant ads. You can opt out via Google's ad settings.</p>
+
+    <h2>5. Data Security</h2>
+    <p>We implement appropriate security measures to protect against unauthorized access or disclosure. No method of transmission over the Internet is 100% secure, but we strive to use commercially acceptable means to protect your data.</p>
+
+    <h2>6. Children's Privacy</h2>
+    <p>SaveIt.Pro is not directed at children under 13. We do not knowingly collect personal information from children under 13.</p>
+
+    <h2>7. Your Rights</h2>
+    <p>Depending on your location, you may have rights including access to your data, correction, deletion, and the right to object to processing. Contact us at the address below to exercise these rights.</p>
+
+    <h2>8. Copyright & Intended Use</h2>
+    <p>SaveIt.Pro is intended for personal, offline viewing only. Users are responsible for complying with copyright laws and platform terms of service. Do not download, redistribute, or republish content you do not own without permission.</p>
+
+    <h2>9. Changes to This Policy</h2>
+    <p>We may update this policy from time to time. Changes will be posted on this page with an updated date. Continued use of the service constitutes acceptance of the updated policy.</p>
+
+    <h2>10. Contact Us</h2>
+    <p>If you have questions about this Privacy Policy, please contact us via our <a href="contact.html" style="color:var(--accent)">contact page</a>.</p>
+  </div>
+</div>
+
+<footer><div class="container"><div class="footer-bottom"><p>© 2024 SaveIt.Pro</p><div class="footer-bottom-links"><a href="privacy-policy.html">Privacy</a><a href="contact.html">Contact</a><a href="../index.html">Home</a></div></div></div></footer>
+
+<script>
+const t = localStorage.getItem('theme') || 'dark';
+document.documentElement.setAttribute('data-theme', t);
+document.getElementById('themeToggle').textContent = t === 'dark' ? '☀️' : '🌙';
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  document.getElementById('themeToggle').textContent = next === 'dark' ? '☀️' : '🌙';
+});
+</script>
+</body>
+</html>
